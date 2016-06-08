@@ -1,5 +1,6 @@
 
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -29,23 +30,52 @@ public class binaryEncryption
 		binaryKey = key.getBytes();
 		
 		rawBinary = readBinary(directory);	
+		System.out.println("Before Manipulation");
 		System.out.println(Arrays.toString(rawBinary));
 		printByteArray(rawBinary);
+		System.out.println();
 		
 		binaryShiftWithKey(rawBinary, binaryKey);
+		System.out.println("Encrypted");
+			System.out.println("File Content: ");
+			writeToFile(directory, rawBinary);
+			printByteArray(readBinary(directory));
 		System.out.println(Arrays.toString(rawBinary));
 		printByteArray(rawBinary);
+		System.out.println();
 		
 		binaryShiftWithKeyDecrypt(rawBinary, binaryKey);
+		System.out.println("Decrypted");
+		System.out.println("File Content: ");
+		writeToFile(directory, rawBinary);
+		printByteArray(readBinary(directory));
 		System.out.println(Arrays.toString(rawBinary));
 		printByteArray(rawBinary);
+		System.out.println();
 
+	}
+	
+	public static void writeToFile(String directory, byte[] byteContent ) throws IOException
+	{
+		File file = new File(directory);
+		
+		if (!file.exists()) 
+		{
+			file.createNewFile();
+		}
+		
+		FileWriter fw = new FileWriter(file.getAbsoluteFile());
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(new String(byteContent, "UTF-8"));
+		bw.close();
+
+		
 	}
 	
 	public static void printByteArray(byte[] a) throws UnsupportedEncodingException
 	{
 		String str = new String(a, "UTF-8");
-		System.out.println(a);
+		System.out.println(str);
 	}
 	
 	public static void binaryShiftWithKey(byte[] rawBinary ,byte[] binaryKey)
@@ -71,5 +101,6 @@ public class binaryEncryption
 	    return Files.readAllBytes(path);
 		
 	}
+
 }
 
