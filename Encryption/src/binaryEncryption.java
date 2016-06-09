@@ -20,30 +20,37 @@ public class binaryEncryption
 		String key;
 		byte[] binaryKey;
 
+		//Gather file directory path from Input
 		System.out.println("Enter your file directory path: ");
 		Scanner scanner = new Scanner(System.in);
 		directory = scanner.nextLine();
 		
+		//Gather Key for cipher from Input 
 		System.out.println("Enter the key you would like to use: ");
 		Scanner scanner2 = new Scanner(System.in);
 		key = scanner2.nextLine();
-		binaryKey = key.getBytes();
 		
+		//Convert Both file contents and key into byte[]
+		binaryKey = key.getBytes();
 		rawBinary = readBinary(directory);	
+		
+		//Information of File content in bytes and in normal character set
 		System.out.println("Before Manipulation");
 		System.out.println(Arrays.toString(rawBinary));
 		printByteArray(rawBinary);
 		System.out.println();
 		
+		//Encryption Process Showing resulting file content 
 		binaryShiftWithKey(rawBinary, binaryKey);
 		System.out.println("Encrypted");
-			System.out.println("File Content: ");
-			writeToFile(directory, rawBinary);
-			printByteArray(readBinary(directory));
+		System.out.println("File Content: ");
+		writeToFile(directory, rawBinary);
+		printByteArray(readBinary(directory));
 		System.out.println(Arrays.toString(rawBinary));
 		printByteArray(rawBinary);
 		System.out.println();
 		
+		//Decryption Process Showing resulting file content  
 		binaryShiftWithKeyDecrypt(rawBinary, binaryKey);
 		System.out.println("Decrypted");
 		System.out.println("File Content: ");
@@ -54,8 +61,8 @@ public class binaryEncryption
 		System.out.println();
 
 	}
-	
-	public static void writeToFile(String directory, byte[] byteContent ) throws IOException
+	//Takes a byte[] and writes the contents of the byte[] in UTF-8 character set within the specified directory 
+	private static void writeToFile(String directory, byte[] byteContent ) throws IOException
 	{
 		File file = new File(directory);
 		
@@ -68,16 +75,17 @@ public class binaryEncryption
 		BufferedWriter bw = new BufferedWriter(fw);
 		bw.write(new String(byteContent, "UTF-8"));
 		bw.close();
-
-		
 	}
 	
-	public static void printByteArray(byte[] a) throws UnsupportedEncodingException
+	//Takes a byte[] converts it into UTF-8 String and prints the String
+	private static void printByteArray(byte[] a) throws UnsupportedEncodingException
 	{
 		String str = new String(a, "UTF-8");
 		System.out.println(str);
 	}
 	
+	//Byte shifting cipher where byte value for each element within the array is added or subtracted
+	//relative to the elements of the byte[] key chosen.  
 	public static void binaryShiftWithKey(byte[] rawBinary ,byte[] binaryKey)
 	{
 		for(int i = 0; i <= rawBinary.length-1; i++)
@@ -86,6 +94,8 @@ public class binaryEncryption
 		}
 	}
 	
+	//Byte shifting cipher where byte value for each element within the array is added or subtracted
+	//relative to the elements of the byte[] key chosen.  
 	public static void binaryShiftWithKeyDecrypt(byte[] rawBinary ,byte[] binaryKey)
 	{
 		for(int i = 0; i <= rawBinary.length-1; i++)
@@ -94,6 +104,7 @@ public class binaryEncryption
 		}
 	}
 	
+	//Reads the content of the given Directory and returns a byte[] of each character in the file.  
 	private static byte[] readBinary(String directory) throws IOException
 	{
 		
